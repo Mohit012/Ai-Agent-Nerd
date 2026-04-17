@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const res = await axios.get('http://localhost:5000/api/auth/me');
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/me`);
         setUser(res.data);
       }
     } catch (error) {
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem('token', res.token);
           localStorage.setItem('refreshToken', res.refreshToken);
           axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
-          const userRes = await axios.get('http://localhost:5000/api/auth/me');
+          const userRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/me`);
           setUser(userRes.data);
           return;
         } catch (refreshError) {
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       return userData;
     }
     
-    const res = await axios.post('http://localhost:5000/api/auth/login', { email: emailOrToken, password: passwordOrData, rememberMe });
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, { email: emailOrToken, password: passwordOrData, rememberMe });
     localStorage.setItem('token', res.data.token);
     if (res.data.refreshToken) {
       localStorage.setItem('refreshToken', res.data.refreshToken);
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const res = await axios.post('http://localhost:5000/api/auth/register/init', { name, email, password });
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/register/init`, { name, email, password });
     return res.data;
   };
 

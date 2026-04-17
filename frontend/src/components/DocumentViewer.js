@@ -190,7 +190,7 @@ export default function DocumentViewer({ documents, onDocumentsChange, highlight
   const handleTranslate = async (doc, targetLang = 'en') => {
     if (!extractedTexts[doc._id]) return;
     try {
-      const res = await fetch('http://localhost:5000/api/chat/translate', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/chat/translate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
